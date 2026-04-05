@@ -1,25 +1,45 @@
 # sovereignagent
 
-Sovereign Agent — prototype repo scaffold.
+SovereignAgent — automated privacy-removal orchestration with real-time Superfluid payouts on Base.
 
-This repository contains a minimal prototype for the Search & Analysis Agent (phase 1).
+Why SovereignAgent?
+- Automated data-broker opt-outs and prioritized threat remediation
+- Real-time micropayments via Superfluid USDCx on Base (streams & IDAs)
+- Secure, sandboxed agents and enterprise-ready orchestration
 
-Note: You requested Base chain only for Superfluid tests — keep blockchain scripts configured for Base chain RPCs.
+Getting started
 
-Files:
-- `src/search_agent/search_agent.py` — prototype search & threat analysis script
-- `requirements.txt` — Python dependencies
-- `.gitignore`
+1) Configure environment
+	- Copy `.env.example` to `.env` and fill in your test keys (never commit `.env`).
 
-How to run (Python 3.10+):
+2) Install Node dependencies
+```bash
+npm ci
+```
 
-1. Create a virtualenv and install dependencies:
+3) Run a quick test (uses `test.js`):
+```bash
+node test.js
+```
 
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+Registration & Priority Payouts
 
-2. Run the prototype:
+Want priority payouts and featured placement? Create a registration issue using the `Register Sovereign Agent` template in `.github/ISSUE_TEMPLATE/register_agent.md` and include your ENS / on-chain identity (e.g., `normancomics.base.eth`).
 
-python src/search_agent/search_agent.py "Full Name"
+Files added in this repo
+- `SovereignAgent.js` — orchestrator
+- `agents/SearchAgent.js` — search & threat analysis
+- `agents/BrokerAgent.js` — data broker automation (placeholder)
+- `services/SuperfluidService.js` — Base-compatible Superfluid helper
+- `test.js` — example runner
+- `.env.example` — environment variable template (DO NOT commit secrets)
+- `.github/workflows/superfluid-test.yml` — GitHub Actions test workflow
+
+Security notes
+- All sensitive keys must live in `.env` locally and in GitHub Actions Secrets for CI.
+- Run `npm audit` and `npm audit fix` before publishing. Review any critical advisories manually.
+
+SEO / Quick Pitch
+
+Automated opt-out workflows + Superfluid streaming payouts on Base — join the SovereignAgent beta for priority payouts and featured listings.
 
