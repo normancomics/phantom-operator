@@ -11,8 +11,8 @@
   "author": "normancomics",
   "license": "MIT",
   "dependencies": {
-    "@superfluid-finance/sdk-core": "1.2.1",
-    "axios": "1.4.0",
+    "@superfluid-finance/sdk-core": "^0.8.0",
+    "axios": "^1.14.0",
     "cheerio": "1.0.0-rc.12",
     "dotenv": "16.0.3",
     "ethers": "5.7.2"
