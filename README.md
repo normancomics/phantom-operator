@@ -1,5 +1,7 @@
 # SovereignAgent
 
+> **Created by** [normancomics](https://github.com/normancomics) — `normancomics.eth` · `normancomics.base.eth` · `normancomics.reserve.superfluid.eth` · [`0x3d95d4a6dbae0cd0643a82b13a13b08921d6adf7`](https://basescan.org/address/0x3d95d4a6dbae0cd0643a82b13a13b08921d6adf7)
+
 **SovereignAgent — automated privacy-removal orchestration with real-time Superfluid payouts on Base.**
 
 SovereignAgent coordinates secure, sandboxed agents to:

@@ -53,7 +53,7 @@ async function main() {
     })),
     payment: manifest.payment,
     chainId: manifest.chainId,
-    author: manifest.author,
+    author: typeof manifest.author === 'string' ? manifest.author : manifest.author.name,
     version: manifest.version,
     website: manifest.website,
   };

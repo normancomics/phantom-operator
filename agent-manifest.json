@@ -4,7 +4,13 @@
   "handle": "normancomics.base.eth",
   "description": "Automated privacy-removal agent: scans the web for personal data leaks, classifies threats, and submits opt-out requests to data brokers. Payments via Superfluid streaming on Base.",
   "version": "0.1.0",
-  "author": "normancomics",
+  "author": {
+    "name": "normancomics",
+    "address": "0x3d95d4a6dbae0cd0643a82b13a13b08921d6adf7",
+    "ens": "normancomics.eth",
+    "baseEns": "normancomics.base.eth",
+    "superfluidIdentity": "normancomics.reserve.superfluid.eth"
+  },
   "chainId": 8453,
   "website": "https://github.com/normancomics/sovereignagent",
   "skills": [
