@@ -1,13 +1,28 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+const axios     = require('axios');
+const cheerio   = require('cheerio');
+const RagService = require('../services/RagService');
 
 class SearchAgent {
   static async run(userInfo) {
     const query = `${userInfo.fullName}`;
     console.log(`SearchAgent: searching for ${query}`);
     const results = await this.performDuckDuckGoSearch(query, 10);
-    const analyzed = this.analyzeThreats(results);
-    return analyzed;
+
+    // Re-rank by RAG relevance before threat classification
+    const ranked = RagService.retrieveRelevantPassages(results, query, { topK: results.length });
+    // Rebuild a de-duplicated results array ordered by RAG score
+    const seenLinks = new Set();
+    const reranked  = [];
+    for (const p of ranked) {
+      const match = results.find(r => r.link === p.source && !seenLinks.has(r.link));
+      if (match) { seenLinks.add(match.link); reranked.push(match); }
+    }
+    // Append any results not captured in passages (e.g. no description)
+    for (const r of results) {
+      if (!seenLinks.has(r.link)) reranked.push(r);
+    }
+
+    return this.analyzeThreats(reranked);
   }
 
   static async performDuckDuckGoSearch(query, num = 10) {
