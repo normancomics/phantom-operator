@@ -29,7 +29,14 @@ const USER_AGENT               = 'SovereignAgent-BreachCheck/1.0 (https://github
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-/** SHA-1 hash a string and return uppercase hex. */
+/** SHA-1 hash a string and return uppercase hex.
+ *
+ * NOTE: SHA-1 is used here solely because the HaveIBeenPwned k-anonymity
+ * range API requires SHA-1 hashes per its documented specification:
+ * https://haveibeenpwned.com/API/v3#SearchingPwnedPasswordsByRange
+ * This is NOT a password storage hash — no hash is ever persisted.
+ * Only the first 5 hex characters are transmitted to the remote API.
+ */
 function sha1(input) {
   return crypto.createHash('sha1').update(input).digest('hex').toUpperCase();
 }

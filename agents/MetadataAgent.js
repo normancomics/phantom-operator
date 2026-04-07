@@ -30,6 +30,33 @@ const cheerio = require('cheerio');
 const USER_AGENT = 'SovereignAgent-MetaAudit/1.0 (https://github.com/normancomics/sovereignagent)';
 const REQUEST_TIMEOUT_MS = 15000;
 
+// ── SSRF guard ────────────────────────────────────────────────────────────────
+// Block requests to private/loopback/link-local addresses and special hostnames
+// that would otherwise allow server-side request forgery.
+
+const PRIVATE_IP_RE = /^(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.|127\.|169\.254\.|0\.|::1|fc|fd)/i;
+const PRIVATE_HOST_RE = /^(localhost|.*\.local|.*\.internal|metadata\.google\.internal)$/i;
+
+/**
+ * Throw if the URL targets a private, loopback, or otherwise disallowed host.
+ * This is a best-effort static guard — runtime DNS rebinding is not prevented
+ * here but should be addressed at the network layer for production deployments.
+ * @param {string} rawUrl
+ */
+function assertSafeUrl(rawUrl) {
+  let parsed;
+  try { parsed = new URL(rawUrl); } catch { throw new Error('Invalid URL'); }
+
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+    throw new Error('Only HTTP and HTTPS URLs are permitted');
+  }
+
+  const host = parsed.hostname;
+  if (PRIVATE_HOST_RE.test(host) || PRIVATE_IP_RE.test(host)) {
+    throw new Error('Requests to private or internal network addresses are not permitted');
+  }
+}
+
 // ── Risk classification rules ─────────────────────────────────────────────────
 
 // HTTP headers and the risk each leaks
@@ -89,6 +116,9 @@ class MetadataAgent {
    * @returns {Promise<MetadataAuditReport>}
    */
   static async audit(targetUrl) {
+    // SSRF guard — must run before any network call
+    assertSafeUrl(targetUrl);
+
     const { responseHeaders, body, finalUrl, statusCode } =
       await MetadataAgent._fetch(targetUrl);
 
