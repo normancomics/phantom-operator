@@ -2,7 +2,7 @@ const SearchAgent = require('./agents/SearchAgent');
 const BrokerAgent = require('./agents/BrokerAgent');
 const { startSuperfluidFlow, stopSuperfluidFlow } = require('./services/SuperfluidService');
 
-class SovereignAgent {
+class PhantomOperatorCore {
   constructor(config = {}) {
     this.searchAgent = new SearchAgent(config.search || {});
     this.brokerAgent = new BrokerAgent(config.broker || {});
