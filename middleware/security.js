@@ -1,7 +1,7 @@
 /**
  * middleware/security.js
  *
- * Security middleware for SovereignAgent HTTP server.
+ * Security middleware for PhantomOperator HTTP server.
  *
  *  - Sliding-window rate limiter (per IP, configurable limits)
  *  - Hardened HTTP security headers (CSP, X-Content-Type-Options, etc.)

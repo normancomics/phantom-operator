@@ -1,8 +1,8 @@
 {
-  "name": "sovereignagent",
+  "name": "phantom-operator",
   "version": "0.1.0",
-  "description": "Sovereign Agent orchestrator and sub-agents (prototype)",
-  "main": "SovereignAgent.js",
+  "description": "PhantomOperator — multi-operator privacy and OPSEC agentic framework",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "node test.js",

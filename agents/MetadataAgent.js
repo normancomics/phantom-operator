@@ -27,7 +27,7 @@
 const axios   = require('axios');
 const cheerio = require('cheerio');
 
-const USER_AGENT = 'SovereignAgent-MetaAudit/1.0 (https://github.com/normancomics/sovereignagent)';
+const USER_AGENT = 'PhantomOperator-MetaAudit/1.0 (https://github.com/normancomics/PhantomOperator)';
 const REQUEST_TIMEOUT_MS = 15000;
 
 // ── SSRF guard ────────────────────────────────────────────────────────────────

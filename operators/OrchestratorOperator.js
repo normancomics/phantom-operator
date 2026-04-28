@@ -1,14 +1,17 @@
-// Simple wrapper for now – you can refactor logic into here over time.
-const SovereignAgent = require('../SovereignAgent');
+// Simple wrapper — delegates to PhantomOperatorCore.
+const PhantomOperatorCore = require('../PhantomOperatorCore');
 
 class OrchestratorOperator {
   constructor(config = {}) {
-    this.core = new SovereignAgent(config);
+    this.core = new PhantomOperatorCore(config);
   }
 
-  // Example method mirroring old behavior
+  /**
+   * Full privacy sweep: threat scan → automated removal → optional Superfluid stream.
+   * @param {{ fullName: string, walletAddress?: string, flowRate?: string }} params
+   * @returns {Promise<{ threatsFound: number, removalAttempts: number, flowTxHash: string|null }>}
+   */
   async startDataRemovalTask(params) {
-    // Delegates to the existing SovereignAgent logic
     return this.core.startDataRemovalTask(params);
   }
 

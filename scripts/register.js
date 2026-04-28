@@ -35,7 +35,7 @@ async function main() {
     console.error(
       'ERROR: AGENT_METADATA_URI is not set.\n' +
       'This should be the public URL (or IPFS CID) of your agent-manifest.json.\n' +
-      'Example: https://raw.githubusercontent.com/normancomics/sovereignagent/main/agent-manifest.json\n' +
+      'Example: https://raw.githubusercontent.com/normancomics/PhantomOperator/main/agent-manifest.json\n' +
       'Set AGENT_METADATA_URI in your .env file and re-run.'
     );
     process.exit(1);
@@ -43,7 +43,7 @@ async function main() {
 
   const wallet = new ethers.Wallet(privateKey);
   const agentAddress = wallet.address;
-  console.log('=== SovereignAgent Registration ===');
+  console.log('=== PhantomOperator Registration ===');
   console.log('Agent wallet:', agentAddress);
   console.log('Metadata URI:', AGENT_METADATA_URI);
   console.log('Chain: Base mainnet (8453)');

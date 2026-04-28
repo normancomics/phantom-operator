@@ -2,7 +2,7 @@ const SearchAgent = require('./agents/SearchAgent');
 const BrokerAgent = require('./agents/BrokerAgent');
 const { startSuperfluidFlow, stopSuperfluidFlow } = require('./services/SuperfluidService');
 
-class SovereignAgent {
+class PhantomOperatorCore {
   constructor(config = {}) {
     this.searchAgent = new SearchAgent(config.search || {});
     this.brokerAgent = new BrokerAgent(config.broker || {});
@@ -64,6 +64,50 @@ class SovereignAgent {
       jobs,
     };
   }
+
+  /**
+   * Full privacy sweep used by the paid full-privacy-sweep skill.
+   *  1. Runs a real DuckDuckGo threat scan via SearchAgent.run.
+   *  2. Submits removal requests for every high/critical threat.
+   *  3. Optionally opens a Superfluid payment stream for the duration.
+   *
+   * @param {{ fullName: string, walletAddress?: string, flowRate?: string }} params
+   *   fullName     - Full name to scan and remediate (required).
+   *   walletAddress - Wallet that will stream payment; omit to skip Superfluid.
+   *   flowRate     - Superfluid flow rate in wei/second (string, e.g. "385802469135802"
+   *                  ≈ $1/day in USDCx). Required when walletAddress is provided;
+   *                  ignored otherwise.
+   * @returns {Promise<{ threatsFound: number, removalAttempts: number, flowTxHash: string|null }>}
+   */
+  async startDataRemovalTask({ fullName, walletAddress, flowRate }) {
+    // 1. Threat scan
+    const threats = await SearchAgent.run({ fullName });
+    const actionable = threats.filter(
+      t => t.threatLevel === 'critical' || t.threatLevel === 'high'
+    );
+
+    // 2. Removal requests for actionable threats
+    const removalResults = await Promise.allSettled(
+      actionable.map(t => BrokerAgent.removeThreat({ link: t.link, fullName }))
+    );
+    const removalAttempts = removalResults.length;
+
+    // 3. Optionally open a Superfluid stream
+    let flowTxHash = null;
+    if (walletAddress && flowRate) {
+      try {
+        flowTxHash = await startSuperfluidFlow(walletAddress, flowRate);
+      } catch (err) {
+        console.warn('PhantomOperatorCore: Superfluid stream failed (non-fatal):', err.message);
+      }
+    }
+
+    return {
+      threatsFound:    threats.length,
+      removalAttempts,
+      flowTxHash,
+    };
+  }
 }
 
-module.exports = SovereignAgent;
+module.exports = PhantomOperatorCore;

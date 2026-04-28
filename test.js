@@ -1,8 +1,8 @@
-const SovereignAgent = require('./SovereignAgent');
+const PhantomOperatorCore = require('./PhantomOperatorCore');
 
 (async () => {
   try {
-    const agent = new SovereignAgent();
+    const agent = new PhantomOperatorCore();
 
     const user = {
       email: 'user@example.com',
@@ -29,7 +29,7 @@ const SovereignAgent = require('./SovereignAgent');
       console.log('No TEST_RECEIVER_ADDRESS set; skipping Superfluid demo.');
     }
   } catch (err) {
-    console.error('Error running SovereignAgent test:', err);
+    console.error('Error running PhantomOperator test:', err);
     process.exit(1);
   }
 })();

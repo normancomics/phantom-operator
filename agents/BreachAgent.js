@@ -25,7 +25,7 @@ const axios  = require('axios');
 const HIBP_API_BASE            = 'https://haveibeenpwned.com/api/v3';
 const HIBP_PWNED_PASSWORDS_BASE = 'https://api.pwnedpasswords.com';
 const HIBP_API_KEY             = process.env.HIBP_API_KEY;
-const USER_AGENT               = 'SovereignAgent-BreachCheck/1.0 (https://github.com/normancomics/sovereignagent)';
+const USER_AGENT               = 'PhantomOperator-BreachCheck/1.0 (https://github.com/normancomics/PhantomOperator)';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

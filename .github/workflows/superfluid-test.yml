@@ -26,5 +26,6 @@ jobs:
           CHAIN_ID: ${{ secrets.CHAIN_ID }}
           SUPER_TOKEN: ${{ secrets.SUPER_TOKEN }}
           SOVEREIGN_AGENT_ADDRESS: ${{ secrets.SOVEREIGN_AGENT_ADDRESS }}
+          PHANTOM_OPERATOR_ADDRESS: ${{ secrets.PHANTOM_OPERATOR_ADDRESS || secrets.SOVEREIGN_AGENT_ADDRESS }}
           FLOW_RATE: ${{ secrets.FLOW_RATE }}
         run: node test.js

@@ -256,11 +256,41 @@ See [`server.js`](server.js) for expected request bodies and validation.
 
 ---
 
+## Python Prototype
+
+`src/search_agent/search_agent.py` is a **standalone research prototype** — it is _not_ integrated with the Node.js HTTP server.  It replicates the same DuckDuckGo search + threat-analysis heuristics that are production-implemented in [`agents/SearchAgent.js`](agents/SearchAgent.js), and is kept here for offline/CLI use and as a reference implementation.
+
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Run a manual threat scan
+python src/search_agent/search_agent.py "Full Name"
+# → saves <Full_Name>_threat_analysis.json in the current directory
+```
+
+For production use, call `POST /skills/threat-scan` on the running `server.js` instead.
+
+---
+
 ## Solana Deployment
 
 PhantomOperator includes a native **Solana BPF/SBF program** written in Rust
 that mirrors the skill catalogue on-chain, accepting SOL payments and recording
 every invocation in a per-operator registry account.
+
+> **Integration note:** The Solana program is an independent on-chain payment
+> surface.  It does **not** share runtime state with the Node.js HTTP server
+> (`server.js`) — they are two separate entry points into the PhantomOperator
+> skill catalogue:
+>
+> | Surface | Runtime | Payment token | Entry point |
+> |---|---|---|---|
+> | HTTP API | Node.js | USDCx on Base (x402) or Monero | `server.js` |
+> | On-chain program | Solana BPF/SBF | SOL (lamports) | `solana/programs/phantom_operator/` |
+>
+> A future integration layer (e.g. a shared job queue or cross-chain bridge)
+> will allow either surface to trigger the same privacy-sweep logic.
 
 ### Quick start
 

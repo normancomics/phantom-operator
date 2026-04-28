@@ -1,7 +1,7 @@
 /**
  * RagService.js
  *
- * Retrieval-Augmented Generation (RAG) service for SovereignAgent.
+ * Retrieval-Augmented Generation (RAG) service for PhantomOperator.
  *
  * Provides a lightweight, zero-dependency retrieval layer that:
  *   1. Chunks search result documents into overlapping sentence windows

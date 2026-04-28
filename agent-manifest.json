@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "name": "SovereignAgent",
+  "name": "PhantomOperator",
   "handle": "normancomics.base.eth",
   "description": "Automated privacy-removal agent: scans the web for personal data leaks, classifies threats, and submits opt-out requests to data brokers. Payments via Superfluid streaming on Base.",
   "version": "0.1.0",
@@ -12,7 +12,7 @@
     "superfluidIdentity": "normancomics.reserve.superfluid.eth"
   },
   "chainId": 8453,
-  "website": "https://github.com/normancomics/sovereignagent",
+  "website": "https://github.com/normancomics/PhantomOperator",
   "skills": [
     {
       "id": "threat-scan",

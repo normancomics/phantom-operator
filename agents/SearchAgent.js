@@ -4,7 +4,7 @@ const RagService = require('../services/RagService');
 
 class SearchAgent {
   /**
-   * Instance constructor — used by SovereignAgent.js for backward-compatible
+   * Instance constructor — used by PhantomOperatorCore.js for backward-compatible
    * `new SearchAgent(config).scan(user)` calls.
    */
   constructor(config = {}) {
@@ -14,7 +14,7 @@ class SearchAgent {
   /**
    * Demo / backward-compatible instance method.
    * Returns a single example exposure so the legacy pipeline (test.js,
-   * SovereignAgent.runPrivacyWorkflow) remains testable without live DDG calls.
+   * PhantomOperatorCore.runPrivacyWorkflow) remains testable without live DDG calls.
    */
   async scan(user) {
     const { email, name, country } = user;
@@ -59,7 +59,7 @@ class SearchAgent {
 
   static async performDuckDuckGoSearch(query, num = 10) {
     const url = 'https://html.duckduckgo.com/html';
-    const headers = { 'User-Agent': 'Mozilla/5.0 (compatible; SovereignAgent/1.0)' };
+    const headers = { 'User-Agent': 'Mozilla/5.0 (compatible; PhantomOperator/1.0)' };
     const params = new URLSearchParams();
     params.append('q', query);
 
