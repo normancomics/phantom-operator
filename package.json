@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node test.js",
+    "test:openmythos": "node tests/openmythos.test.js",
     "register": "node scripts/register.js",
     "list-bazaar": "node scripts/list-on-bazaar.js",
     "solana:check": "bash solana/scripts/check-solana.sh",
