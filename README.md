@@ -256,6 +256,90 @@ See [`server.js`](server.js) for expected request bodies and validation.
 
 ---
 
+## OpenMythos Runtime Integration
+
+PhantomOperator integrates **[OpenMythos](https://github.com/kyegomez/OpenMythos)**
+(by [@kyegomez](https://github.com/kyegomez)) as a runtime AI provider for
+response generation and extensible multi-agent orchestration.
+
+### Architecture
+
+```
+OpenMythosOperator          (operators/OpenMythosOperator.js)
+    │
+    ├── OpenMythosProvider  (services/OpenMythosProvider.js)
+    │     - HTTP client for the OpenMythos API
+    │     - Safety rails: exploit-instruction guard
+    │     - Secret redaction in all log output
+    │     - Offline / mock mode (OPENMYTHOS_MOCK=true)
+    │
+    └── OpenMythosOrchestrator (services/OpenMythosOrchestrator.js)
+          - Parallel sub-agent execution (Promise.allSettled)
+          - Tool allowlist enforcement (sandbox boundary)
+          - Per-task wall-clock time limits
+          - Configurable max-concurrency
+```
+
+### Configuration
+
+Add these to your `.env` (see `.env.example` for all options):
+
+```env
+OPENMYTHOS_API_KEY=your_key_here
+OPENMYTHOS_MODEL=openmythos-base
+OPENMYTHOS_MODE=standard          # standard | creative | precise
+OPENMYTHOS_SEED=                  # optional, for reproducible outputs
+OPENMYTHOS_MOCK=false             # set true for offline / CI use
+OPENMYTHOS_TASK_TIMEOUT_MS=30000
+OPENMYTHOS_MAX_AGENTS=10
+```
+
+### Quick usage (JS)
+
+```js
+const OpenMythosOperator = require('./operators/OpenMythosOperator');
+
+const op = new OpenMythosOperator();
+
+// Single generation
+const res = await op.generate('Summarise the privacy risks of being listed on Spokeo.');
+console.log(OpenMythosOperator.extractText(res));
+
+// Parallel privacy analysis across multiple skill domains
+const results = await op.orchestratePrivacyAnalysis('Jane Doe', [
+  'threat-scan',
+  'opsec-score',
+  'breach-check',
+]);
+```
+
+### Safety & compliance rails
+
+- **Exploit-instruction guard** — prompts matching known exploit patterns (reverse
+  shells, SQLi vectors, keyloggers, etc.) are intercepted at the provider level and
+  replaced with defensive security guidance. No exploit content is generated.
+- **Secret redaction** — all log output passes through a redactor that strips API
+  keys, private keys, and bearer tokens before they reach stdout/stderr.
+
+### Tests
+
+```bash
+node tests/openmythos.test.js
+# or
+npm run test:openmythos
+```
+
+### Full documentation & examples
+
+See [`docs/openmythos-examples.md`](docs/openmythos-examples.md) for:
+
+- Complete JS API reference
+- Example prompts and workflows
+- Sandbox / tool allowlist configuration
+- Safety and compliance detail
+
+---
+
 ## Python Prototype
 
 `src/search_agent/search_agent.py` is a **standalone research prototype** — it is _not_ integrated with the Node.js HTTP server.  It replicates the same DuckDuckGo search + threat-analysis heuristics that are production-implemented in [`agents/SearchAgent.js`](agents/SearchAgent.js), and is kept here for offline/CLI use and as a reference implementation.
@@ -350,3 +434,17 @@ every invocation in a per-operator registry account.
 
 See **[`solana/README.md`](solana/README.md)** for the full guide, including
 skill IDs, upgrade instructions, environment variables, and troubleshooting.
+
+---
+
+## Credits & Acknowledgements
+
+| Project | Author | Role in PhantomOperator |
+|---|---|---|
+| **[OpenMythos](https://github.com/kyegomez/OpenMythos)** | [@kyegomez](https://github.com/kyegomez) | Runtime AI provider for response generation and multi-agent orchestration |
+| **[Superfluid](https://superfluid.finance)** | Superfluid Finance | Streaming micropayments on Base |
+| **[ethers.js](https://github.com/ethers-io/ethers.js)** | Richard Moore | EVM wallet and contract interaction |
+
+PhantomOperator is created and maintained by
+**[normancomics](https://github.com/normancomics)** —
+normancomics.eth · normancomics.base.eth · normancomics.reserve.superfluid.eth
